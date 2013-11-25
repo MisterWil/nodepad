@@ -1,0 +1,9 @@
+extends layout
+
+block content
+	h1=document.title
+	p=document.data
+	p
+		a(class='button', href='/documents/' + document.id + '/edit') Edit
+		a(class='button destroy', href='/documents/' + document.id + '/del') Delete
+		a(href='/documents', class='button') &larr; All Documents

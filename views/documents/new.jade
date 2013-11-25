@@ -1,0 +1,8 @@
+extends layout
+
+block content
+	h1 New Document
+	p
+		a(href='/documents', class='button') &larr; All Documents
+	form(method='post', action='/documents')
+		include fields

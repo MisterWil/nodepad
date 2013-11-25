@@ -1,0 +1,10 @@
+extends layout
+
+block content
+	h2 Edit Document
+	p
+		a(href='/documents', class='button') &larr; All Documents
+	form(method='post', action='/documents' + document.id)
+		input(name='document[id]', value=document.id, type='hidden')
+		input(name='_method', value='PUT', type='hidden')
+		include fields
