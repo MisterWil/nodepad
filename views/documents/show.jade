@@ -1,7 +1,8 @@
 extends ../layout
 
-block content
+block header
 	h1=document.title
+block content
 	p=document.data
 	p
 		a(class='button', href='/documents/' + document.id + '/edit') Edit

@@ -1,6 +1,14 @@
 User = require("./model");
 
 module.exports = {
+	isAuthenticated: function (req, res, next) {
+		if (req.session.user) {
+			next();
+		} else {
+			req.session.notifications = {error: 'Login Required'};
+			res.redirect('/user');
+		}
+	},
 	empty: function() {
 		return new User();
 	},

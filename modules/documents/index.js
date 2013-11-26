@@ -21,7 +21,6 @@ module.exports = {
 		});
 	},
 	update: function(document, callback) {
-		console.log(document);
 		Document.findById(document.id, function(err, d) {
 			if (err) return handleError(err);
 			d.title = document.title;

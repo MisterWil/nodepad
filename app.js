@@ -74,7 +74,8 @@ app.get('/', function(req, res) {
 });
 
 app.all('/*', function (req, res, next) {
-	res.locals.errMsg = req.session.errMsg;
+	res.locals.notifications = req.session.notifications;
+	delete req.session.notifications;
 	next();
 });
 

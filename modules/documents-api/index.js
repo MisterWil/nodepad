@@ -1,5 +1,5 @@
 var documents = require("../documents");
-var session = require("../sessions");
+var users = require("../users");
 
 var express = require("express");
 var app = module.exports = express();
@@ -10,7 +10,8 @@ app.configure('development', function(){
 });
 
 // Document list
-app.get('/documents.:format?', session.isAuthenticated, function(req, res) {
+//app.get('/documents.:format?', users.isAuthenticated, function(req, res) {
+app.get('/documents.:format?', function(req, res) {
 	documents.all(function(err, docs) {
 		if (err) return next(err);
 		switch(req.params.format) {
@@ -47,6 +48,7 @@ app.get('/documents/:id.:format?/del', function (req, res) {
 	    		break;
 
 	    	default:
+	    		req.session.notifications = {success: 'Document Deleted'};
 	    		res.redirect('/documents');
 		}
 	})
@@ -67,6 +69,7 @@ app.post('/documents.:format?', function(req, res, next) {
 	    		break;
 
 	    	default:
+	    		req.session.notifications = {success: 'Document Created'};
 	    		res.redirect('/documents');
 		}
 	});
@@ -100,6 +103,7 @@ app.put('/documents:id.:format?', function (req, res) {
 				break;
 
 			default:
+				req.session.notifications = {success: 'Document Updated'};
 				res.redirect('/documents');
 		}
 	});
@@ -115,6 +119,7 @@ app.del('/documents/:id.:format?', function (req, res) {
 	    		break;
 
 	    	default:
+	    		req.session.notifications = {success: 'Document Deleted'};
 	    		res.redirect('/documents');
 		}
 	})
