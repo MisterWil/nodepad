@@ -4,8 +4,6 @@
  */
 
 var express = require('express');
-var routes = require('./routes');
-var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
 var mongoose = require('mongoose');
@@ -75,12 +73,13 @@ app.get('/', function(req, res) {
 
 app.all('/*', function (req, res, next) {
 	res.locals.notifications = req.session.notifications;
+	res.locals.user = req.session.user;
 	delete req.session.notifications;
 	next();
 });
 
-app.use('/', require('./modules/users-api'));
-app.use('/', require('./modules/documents-api'));
+app.use('/', require('./modules/user-routes'));
+app.use('/', require('./modules/documents-routes'));
 
 // Start server
 http.createServer(app).listen(app.get('port'), function(){

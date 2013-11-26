@@ -1,0 +1,21 @@
+extends ../layout
+
+block header
+	h2 Nodepad Registration
+	a(class='button', href='/user') &larr; Login
+block content
+	form(method='post', action='/user/new')
+		div
+			label Username:
+			input(name='user[username]')
+		div
+			label Email:
+			input(name='user[email]')
+		div
+			label Password:
+			input(name='user[password]' type='password')
+		div
+			label Again:
+			input(name='user[pwVerify]' type='password')
+		div
+			input(type='submit', value='Register')

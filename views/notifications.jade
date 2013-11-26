@@ -1,17 +1,11 @@
 if locals.notifications
-	if locals.notifications.error
-		div(class='alert-box error')
-			span error:&nbsp;
-			=locals.notifications.error
-	else if locals.notifications.success
-		div(class='alert-box success')
-			span success:&nbsp;
-			=locals.notifications.success
-	else if locals.notifications.warning
-		div(class='alert-box warning')
-			span warning:&nbsp;
-			=locals.notifications.warning
-	else if locals.notifications.notice
-		div(class='alert-box notice')
-			span notice:&nbsp;
-			=locals.notifications.notice
+	div(class='alert-box ' + locals.notifications.type)
+		table
+			tr
+				th=locals.notifications.type
+				td
+					- if (Array.isArray(locals.notifications.message))
+						- for (var key in locals.notifications.message)
+							li=locals.notifications.message[key]
+					- else
+						li=locals.notifications.message

@@ -17,11 +17,17 @@ var usernameValidator = [
 var emailValidator = [
 	validate({
 		message: "Email must be longer than 6 characters"
-	},'len', 6, 60),
+	},'len', 6, 128),
 	validate({
 		message: "Email is not valid",
 		passIfEmpty: true
 	}, 'isEmail')
+];
+
+var passwordValidator = [
+	validate({
+		message: "Password must be longer than 6 characters"
+	},'len', 6, 72)
 ];
 
 // User schema
@@ -37,29 +43,29 @@ var User = Schema({
 	email: {
 		type: String,
 		required: true,
+		lowercase: true,
 		validate: emailValidator,
 		index: {unique: true}
 	},
 	password: {
 		type: String,
-		required: true
+		required: true,
+		validate: passwordValidator
 	},
 	displayName: {
-		type: String
+		type: String,
+		default: 'Nodepad User'
 	}
 });
 
 // Before normalizing (lower case) the username, save the display name
-User.path('username').set(function (value) {
+/*User.path('username').set(function (value) {
 	this.displayName = value;
-	next();
-});
+});*/
 
 // Password hashing on save
 User.pre('save', function (next) {
 	var user = this;
-
-	user.displayName = user.username;
 
 	// Only hash the password if it is new or has been modified
 	if (!user.isModified('password')) return next();

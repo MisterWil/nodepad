@@ -5,7 +5,10 @@ module.exports = {
 		if (req.session.user) {
 			next();
 		} else {
-			req.session.notifications = {error: 'Login Required'};
+			req.session.notifications = {
+				type: 'error',
+				message: 'Please Login'
+			};
 			res.redirect('/user');
 		}
 	},
@@ -22,9 +25,9 @@ module.exports = {
 			callback(err, user);
 		});
 	},
-	find: function (un, em, callback) {
+	find: function (user, callback) {
 		// TODO: Find by username OR email?
-		User.findOne({username: un}, function (err, user) {
+		User.findOne({username: user.username}, function (err, user) {
 			callback(err, user);
 		});
 	},

@@ -1,0 +1,9 @@
+if locals.user
+	div(class='user-details')
+		p
+			|Hello,&nbsp;
+			span
+				=user.displayName
+			|!
+		p
+			a(href='/user/logout') Logout
