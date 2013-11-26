@@ -1,5 +1,4 @@
-var documents = require("../documents");
-var session = require("../sessions");
+var users = require("../users");
 
 var express = require("express");
 var app = module.exports = express();
@@ -9,24 +8,12 @@ app.configure('development', function(){
   app.locals.pretty = true;
 });
 
-// Document list
-app.get('/documents.:format?', session.isAuthenticated, function(req, res) {
-	documents.all(function(err, docs) {
-		if (err) return next(err);
-		switch(req.params.format) {
-			case 'json':
-				res.send(docs);
-
-	    		break;
-
-	    	default:
-	    		res.render('documents/index.jade', {
-	    			documents: docs
-	    		});
-		}
-	});
+// User login
+app.get('/user', function(req, res) {
+	res.render('users/login.jade');
 });
 
+/*
 // Edit document
 app.get('/documents/:id.:format?/edit', function (req, res) {
 	documents.get(req.params.id, function (err, d) {
@@ -118,4 +105,4 @@ app.del('/documents/:id.:format?', function (req, res) {
 	    		res.redirect('/documents');
 		}
 	})
-});
+});*/

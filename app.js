@@ -9,11 +9,12 @@ var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
 var mongoose = require('mongoose');
+var MongoStore = require('connect-mongo')(express);
 var stylus = require('stylus');
 var nib = require('nib');
 
 // Database setup
-mongoose.connect('mongodb://localhost/nodepad');
+var db = mongoose.connect('mongodb://localhost/nodepad');
 
 var app = express();
 
@@ -21,7 +22,12 @@ function compile(str, path) {
   return stylus(str)
     .set('filename', path)
     .use(nib())
-}
+};
+
+var sessionStore = new MongoStore({
+	url: 'mongodb://localhost/nodepad',
+	clear_interval: 3600
+});
 
 app.configure(function() {
 	app.set('port', process.env.PORT || 3000);
@@ -35,6 +41,12 @@ app.configure(function() {
 	app.use(express.favicon());
 	app.use(express.json());
 	app.use(express.urlencoded());
+	app.use(express.cookieParser());
+	app.use(express.session({
+		secret: "aSecretGoesHere",
+		cookie: { maxAge: 24 * 60 * 60 * 1000 },
+		store: sessionStore
+	}));
 	app.use(express.methodOverride());
 	app.use(app.router);
 	app.use(express.static(path.join(__dirname, 'public')));
@@ -61,6 +73,12 @@ app.get('/', function(req, res) {
   res.redirect('/documents')
 });
 
+app.all('/*', function (req, res, next) {
+	res.locals.errMsg = req.session.errMsg;
+	next();
+});
+
+app.use('/', require('./modules/users-api'));
 app.use('/', require('./modules/documents-api'));
 
 // Start server
