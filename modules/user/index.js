@@ -27,7 +27,7 @@ module.exports = {
 	},
 	find: function (user, callback) {
 		// TODO: Find by username OR email?
-		User.findOne({username: user.username}, function (err, user) {
+		User.findOne({username: user.username.toLowerCase()}, function (err, user) {
 			callback(err, user);
 		});
 	},
